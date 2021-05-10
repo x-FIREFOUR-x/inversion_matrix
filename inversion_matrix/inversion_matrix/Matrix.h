@@ -1,4 +1,7 @@
 #pragma once
+#include <string>
+#include <iostream>
+#include <fstream>
 using namespace std;
 class Matrix
 {
@@ -7,6 +10,7 @@ class Matrix
 public:
 	Matrix(int);
 	Matrix(const Matrix&);
-
+	void console_read();
+	void file_read(string);
 };
 
