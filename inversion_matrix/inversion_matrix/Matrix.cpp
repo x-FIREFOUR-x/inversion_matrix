@@ -6,6 +6,12 @@ Matrix::Matrix(int s)
 	for (int i = 0; i < size; i++)
 		ptr_matrix[i] = new float[size];
 }
+Matrix::~Matrix()
+{
+	for (int i = 0; i < size; i++)
+		delete[]ptr_matrix[i];
+	delete[]ptr_matrix;
+}
 Matrix::Matrix(const Matrix& origin)
 {
 	size = origin.size;

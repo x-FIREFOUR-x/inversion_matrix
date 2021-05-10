@@ -9,6 +9,7 @@ class Matrix
 	float** ptr_matrix;		// покажчик на матрицю 
 public:
 	Matrix(int);
+	~Matrix();
 	Matrix(const Matrix&);
 	void console_read();
 	void file_read(string);
