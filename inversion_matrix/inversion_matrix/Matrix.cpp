@@ -43,13 +43,21 @@ void Matrix::file_read(string file)
 {
 	ifstream fin;
 	fin.open(file);
-	for (int i = 0; i < size; i++)
+	if (fin.is_open())
 	{
-		for (int j = 0; j < size; j++)
+		for (int i = 0; i < size; i++)
 		{
-			fin >> ptr_matrix[i][j];
+			for (int j = 0; j < size; j++)
+			{
+				fin >> ptr_matrix[i][j];
+			}
 		}
 	}
+	else
+	{
+
+	}
+	
 }
 void Matrix::console_write()
 {
