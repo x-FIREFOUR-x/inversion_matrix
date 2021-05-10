@@ -51,3 +51,27 @@ void Matrix::file_read(string file)
 		}
 	}
 }
+void Matrix::console_write()
+{
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			cout << setw(5) << ptr_matrix[i][j];
+		}
+		cout << endl;
+	}
+}
+void Matrix::file_write(string file)
+{
+	ofstream fout;
+	fout.open(file);
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			fout << ptr_matrix[i][j];
+		}
+		fout << "\n";
+	}
+}
