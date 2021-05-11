@@ -16,5 +16,6 @@ public:
 	void file_read(string);
 	void console_write();
 	void file_write(string);
+	Matrix Gauss();
 };
 
