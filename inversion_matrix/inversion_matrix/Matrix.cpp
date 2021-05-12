@@ -1,28 +1,40 @@
 #include "Matrix.h"
 Matrix::Matrix(int s)
 {
-	size = s;							// присвоєння значення полю розмір матриці
-	ptr_matrix = new float* [size];		// виділення пам'яті для матриці
-	for (int i = 0; i < size; i++)
-		ptr_matrix[i] = new float[size];
+	size_line = s;			// присвоєння значення кількості рядків
+	size_column = s;		// присвоєння значення кількості стовбців
+
+	ptr_matrix = new float* [size_line];		// виділення пам'яті для матриці
+	for (int i = 0; i < size_line; i++)
+		ptr_matrix[i] = new float[size_column];
+}
+Matrix::Matrix(int l, int c)
+{
+	size_line = l;			// присвоєння значення кількості рядків
+	size_column = c;		// присвоєння значення кількості стовбців
+
+	ptr_matrix = new float* [size_line];		// виділення пам'яті для матриці
+	for (int i = 0; i < size_line; i++)
+		ptr_matrix[i] = new float[size_column];
 }
 Matrix::~Matrix()
 {
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < size_line; i++)
 		delete[]ptr_matrix[i];
 	delete[]ptr_matrix;
 }
 Matrix::Matrix(const Matrix& origin)
 {
-	size = origin.size;
+	size_line = origin.size_line;
+	size_column = origin.size_column;
 
-	ptr_matrix = new float* [size];
-	for (int i = 0; i < size; i++)
-		ptr_matrix[i] = new float[size];
+	ptr_matrix = new float* [size_line];
+	for (int i = 0; i < size_line; i++)
+		ptr_matrix[i] = new float[size_column];
 
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < size_line; i++)
 	{
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j < size_column; j++)
 		{
 			ptr_matrix[i][j] = origin.ptr_matrix[i][j];
 		}
@@ -31,9 +43,9 @@ Matrix::Matrix(const Matrix& origin)
 }
 void Matrix::console_read()
 {
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < size_line; i++)
 	{
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j < size_column; j++)
 		{
 			cin >> ptr_matrix[i][j];
 		}
@@ -45,9 +57,9 @@ void Matrix::file_read(string file)
 	fin.open(file);
 	if (fin.is_open())
 	{
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < size_line; i++)
 		{
-			for (int j = 0; j < size; j++)
+			for (int j = 0; j < size_column; j++)
 			{
 				fin >> ptr_matrix[i][j];
 			}
@@ -61,9 +73,9 @@ void Matrix::file_read(string file)
 }
 void Matrix::console_write()
 {
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < size_line; i++)
 	{
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j < size_column; j++)
 		{
 			cout << setprecision(3) << setw(6) << ptr_matrix[i][j] << " ";
 		}
@@ -74,9 +86,9 @@ void Matrix::file_write(string file)
 {
 	ofstream fout;
 	fout.open(file);
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < size_line; i++)
 	{
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j < size_column; j++)
 		{
 			fout << ptr_matrix[i][j];
 		}
@@ -85,65 +97,73 @@ void Matrix::file_write(string file)
 }
 Matrix Matrix::Gauss()
 {
-	Matrix A = *this;
-	/*Matrix A(size);
-	for (int i = 0; i < size; i++)
+	if (size_line == size_column)
 	{
-		for (int j = 0; j < size; j++)
+		Matrix A = *this;						// створення обєкта копії вхідної матриці
+		/*Matrix A(size);
+		for (int i = 0; i < size; i++)
 		{
-			A.ptr_matrix[i][j] = ptr_matrix[i][j];
-		}
-	}*/
+			for (int j = 0; j < size; j++)
+			{
+				A.ptr_matrix[i][j] = ptr_matrix[i][j];
+			}
+		}*/
 
-	Matrix E(size);							// одинична матриця яка стане оберненою до даної
-	for (int i = 0; i < size; i++)
-	{
-		for (int j = 0; j < size; j++)
+		int size = size_line;		// вхідна матриця повинна бути квадратною
+		Matrix E(size);							// одинична матриця яка стане оберненою до даної
+		for (int i = 0; i < size; i++)
 		{
-			if (i == j)
+			for (int j = 0; j < size; j++)
 			{
-				E.ptr_matrix[i][j] = 1;
-			}
-			else
-			{
-				E.ptr_matrix[i][j] = 0;
+				if (i == j)
+				{
+					E.ptr_matrix[i][j] = 1;
+				}
+				else
+				{
+					E.ptr_matrix[i][j] = 0;
+				}
 			}
 		}
-	}
-			// прямий хід
-	for (int i = 0; i < size; i++)		// рядок який віднімають
-	{
-		float coef = A.ptr_matrix[i][i];		// коефіцієнт на який потрібно ділити всі елементи рядка матриці для перетворення елем. гол. діагоналі на одиниці
-		for (int j = 0; j < size; j++)		// стовбці (елем рядка i) які теж перебразуються коли роблять 1 на діаг
+		// прямий хід
+		for (int i = 0; i < size; i++)		// рядок який віднімають
 		{
-			A.ptr_matrix[i][j] = A.ptr_matrix[i][j] / coef;
-			E.ptr_matrix[i][j] = E.ptr_matrix[i][j] / coef;
-		}
-		
-		for (int k = i+1; k < size; k++)	// рядок від якого віднімають
-		{
-			float n = A.ptr_matrix[k][i];			// кількісті рядків i яку потрібно відняти щоб в рядку k і стовбці z утворився нуль (щоб під гол діаг стали нулі)	
-			for (int z = 0; z < size; z++)		// стовбці (елементи рядків k, i )
+			float coef = A.ptr_matrix[i][i];		// коефіцієнт на який потрібно ділити всі елементи рядка матриці для перетворення елем. гол. діагоналі на одиниці
+			for (int j = 0; j < size; j++)		// стовбці (елем рядка i) які теж перебразуються коли роблять 1 на діаг
 			{
-					A.ptr_matrix[k][z] = A.ptr_matrix[k][z] - (A.ptr_matrix[i][z]  * n);
+				A.ptr_matrix[i][j] = A.ptr_matrix[i][j] / coef;
+				E.ptr_matrix[i][j] = E.ptr_matrix[i][j] / coef;
+			}
+
+			for (int k = i + 1; k < size; k++)	// рядок від якого віднімають
+			{
+				float n = A.ptr_matrix[k][i];			// кількісті рядків i яку потрібно відняти щоб в рядку k і стовбці z утворився нуль (щоб під гол діаг стали нулі)	
+				for (int z = 0; z < size; z++)		// стовбці (елементи рядків k, i )
+				{
+					A.ptr_matrix[k][z] = A.ptr_matrix[k][z] - (A.ptr_matrix[i][z] * n);
 					E.ptr_matrix[k][z] = E.ptr_matrix[k][z] - (E.ptr_matrix[i][z] * n);
-			}
+				}
 
+			}
 		}
-	}
 		// зворотній хід
-	for (int i = size - 1; i >= 0; i--)		// рядок який віднімають
-	{
-		for (int k = i - 1; k >= 0; k--)		// рядок від якого віднімають
+		for (int i = size - 1; i >= 0; i--)		// рядок який віднімають
 		{
-			float n = A.ptr_matrix[k][i];			// кількісті рядків i яку потрібно відняти щоб в рядку k і стовбці z утворився нуль  (щоб під гол діаг стали нулі)
-			for (int z = size - 1; z >= 0; z--)		// стовбці (елементи рядків k, i )
+			for (int k = i - 1; k >= 0; k--)		// рядок від якого віднімають
 			{
-				A.ptr_matrix[k][z] = A.ptr_matrix[k][z] - A.ptr_matrix[i][z] * n;
-				E.ptr_matrix[k][z] = E.ptr_matrix[k][z] - E.ptr_matrix[i][z] * n;
+				float n = A.ptr_matrix[k][i];			// кількісті рядків i яку потрібно відняти щоб в рядку k і стовбці z утворився нуль  (щоб під гол діаг стали нулі)
+				for (int z = size - 1; z >= 0; z--)		// стовбці (елементи рядків k, i )
+				{
+					A.ptr_matrix[k][z] = A.ptr_matrix[k][z] - A.ptr_matrix[i][z] * n;
+					E.ptr_matrix[k][z] = E.ptr_matrix[k][z] - E.ptr_matrix[i][z] * n;
+				}
 			}
 		}
-	}
 
-	return E;
+		return E;
+	}
+	else
+	{
+		return 0;
+	}
 }
