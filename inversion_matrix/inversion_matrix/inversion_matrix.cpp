@@ -10,12 +10,12 @@ int main()
 	A.console_write();
 	//Matrix B(4);
 	Matrix B = A.Gauss();
-
 	cout << endl;
 	B.console_write();
 
+	Matrix C = A.div_cells();
 	cout << endl;
-	A.console_write();*/
+	C.console_write();*/
 
 	/*Matrix A(3, 2);
 	A.console_read();
@@ -41,6 +41,12 @@ int main()
 	Matrix C = Matrix::inversion_order2(A);
 	C.console_write();*/
 
+	/*Matrix A(2);
+	A.console_read();
+	Matrix B(2);
+	B.console_read();
+	Matrix C = A + B;
+	C.console_write();*/
 
 	return 0;
 
