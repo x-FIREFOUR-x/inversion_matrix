@@ -168,17 +168,17 @@ Matrix Matrix::Gauss()
 		return 0;
 	}
 }
-Matrix Matrix::multiplication(Matrix A, Matrix B, int line_a, int column_a, int line_b, int column_b)
+Matrix Matrix::multiplication(Matrix A, Matrix B)
 {
-	if (column_a == line_b)
+	if (A.size_column == B.size_line)
 	{
-		Matrix C(line_a, column_b);
-		for (int i = 0; i < line_a; i++)
+		Matrix C(A.size_line, B.size_column);
+		for (int i = 0; i < A.size_line; i++)
 		{
-			for (int j = 0; j < column_b; j++)
+			for (int j = 0; j < B.size_column; j++)
 			{
 				float S = 0;
-				for (int k = 0; k < column_a; k++)
+				for (int k = 0; k < A.size_column; k++)
 				{
 					S += A.ptr_matrix[i][k] * B.ptr_matrix[k][j];
 				}

@@ -23,7 +23,7 @@ int main()
 	Matrix B(2, 3);
 	B.console_read();
 
-	Matrix C = Matrix::multiplication(A, B, 3, 2, 2, 3);
+	Matrix C = Matrix::multiplication(A, B);
 	C.console_write();*/
 
 	/*Matrix A(2, 2);
@@ -32,7 +32,7 @@ int main()
 	Matrix B(2, 2);
 	B.console_read();
 
-	Matrix C = Matrix::multiplication(B, A, 2, 2, 2, 2);
+	Matrix C = Matrix::multiplication(B, A);
 	C.console_write();*/
 
 

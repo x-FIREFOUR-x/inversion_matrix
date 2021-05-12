@@ -22,6 +22,6 @@ public:
 	void console_write();
 	void file_write(string);
 	Matrix Gauss();
-	static Matrix multiplication(Matrix, Matrix, int, int, int, int);
+	static Matrix multiplication(Matrix, Matrix);
 };
 
