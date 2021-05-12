@@ -193,3 +193,23 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 		return 0;
 	}
 }
+ Matrix Matrix::inversion_order2(Matrix A)
+{
+	 if (A.size_line == A.size_column && A.size_line == 2)
+	 {
+		 Matrix B(A.size_line, A.size_column);		// обернена матриці матриці A
+		 float det = (A.ptr_matrix[0][0] * A.ptr_matrix[1][1]) - (A.ptr_matrix[0][1] * A.ptr_matrix[1][0]);		// визначник матриці A
+
+		 B.ptr_matrix[0][0] = A.ptr_matrix[1][1] / det;
+		 B.ptr_matrix[0][1] = -1 * A.ptr_matrix[0][1] / det;
+		 B.ptr_matrix[1][0] = -1 * A.ptr_matrix[1][0] / det;
+		 B.ptr_matrix[1][1] = A.ptr_matrix[0][0] / det;
+
+		 return B;
+	 }
+	 else
+	 {
+		 cout << endl << "inversion input not correct matrix" << endl;
+		 return 0;
+	 }
+}

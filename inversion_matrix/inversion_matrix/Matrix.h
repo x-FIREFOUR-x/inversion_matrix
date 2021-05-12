@@ -8,7 +8,7 @@ class Matrix
 {
 	//int size;				// розмір матриці
 	int size_line;			// кількість рядків матриці
-	int size_column;			// кількість стовбців матриці
+	int size_column;		// кількість стовбців матриці
 	float** ptr_matrix;		// покажчик на матрицю 
 
 	
@@ -22,6 +22,7 @@ public:
 	void console_write();
 	void file_write(string);
 	Matrix Gauss();
-	static Matrix multiplication(Matrix, Matrix);
+	static Matrix multiplication(Matrix, Matrix);		// множення довільної матриці яку можна помножити
+	static Matrix inversion_order2(Matrix);				// обернення матриці порядку 2
 };
 

@@ -35,6 +35,12 @@ int main()
 	Matrix C = Matrix::multiplication(B, A);
 	C.console_write();*/
 
+	/*Matrix A(2, 2);
+	A.console_read();
+
+	Matrix C = Matrix::inversion_order2(A);
+	C.console_write();*/
+
 
 	return 0;
 
