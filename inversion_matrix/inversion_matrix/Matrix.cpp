@@ -219,6 +219,7 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 	 {
 		 Matrix B(A.size_line, A.size_column);
 		 B.ptr_matrix[0][0] = 1 / A.ptr_matrix[0][0];
+		 return B;
 	 }
 	 else
 	 {
@@ -227,7 +228,7 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 	 }
  }
 
-/* Matrix Matrix::div_cells()
+ Matrix Matrix::div_cells()
 {
 	 if (size_line == size_column)
 	 {
@@ -319,7 +320,6 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 					 }
 				 }
 			 }
-
 			 return B;
 		 }
 		 else
@@ -329,6 +329,7 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 			 Matrix Y = multiplication(A21, A11_i);
 			 Matrix Q = multiplication(Y, A12);
 			 Q = A22 - Q;
+			 
 			 Matrix Q_i = inversion_order1(Q);
 
 			 Matrix B11(size_line - 1, size_column - 1);		// 4 матриц≥ на €к≥ под≥лена обернена матриц€ A
@@ -387,7 +388,7 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 		 cout << endl << "div_cells input not squre matrix" << endl;
 		 return 0;
 	 }
-}*/
+}
 
  Matrix Matrix::operator-(const Matrix B)
  {
