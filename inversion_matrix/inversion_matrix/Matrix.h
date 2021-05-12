@@ -10,6 +10,8 @@ class Matrix
 	int size_line;			// кількість рядків матриці
 	int size_column;			// кількість стовбців матриці
 	float** ptr_matrix;		// покажчик на матрицю 
+
+	
 public:
 	Matrix(int);
 	Matrix(int, int);
@@ -20,5 +22,6 @@ public:
 	void console_write();
 	void file_write(string);
 	Matrix Gauss();
+	static Matrix multiplication(Matrix, Matrix, int, int, int, int);
 };
 

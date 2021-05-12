@@ -164,6 +164,32 @@ Matrix Matrix::Gauss()
 	}
 	else
 	{
+		cout << endl << "Guess input not squre" << endl;
+		return 0;
+	}
+}
+Matrix Matrix::multiplication(Matrix A, Matrix B, int line_a, int column_a, int line_b, int column_b)
+{
+	if (column_a == line_b)
+	{
+		Matrix C(line_a, column_b);
+		for (int i = 0; i < line_a; i++)
+		{
+			for (int j = 0; j < column_b; j++)
+			{
+				float S = 0;
+				for (int k = 0; k < column_a; k++)
+				{
+					S += A.ptr_matrix[i][k] * B.ptr_matrix[k][j];
+				}
+				C.ptr_matrix[i][j] = S;
+			}
+		}
+		return C;
+	}
+	else
+	{
+		cout << endl << "multiplicate input not correct matrix" << endl;
 		return 0;
 	}
 }

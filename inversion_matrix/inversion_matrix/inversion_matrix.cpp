@@ -17,6 +17,26 @@ int main()
 	cout << endl;
 	A.console_write();*/
 
+	/*Matrix A(3, 2);
+	A.console_read();
+
+	Matrix B(2, 3);
+	B.console_read();
+
+	Matrix C = Matrix::multiplication(A, B, 3, 2, 2, 3);
+	C.console_write();*/
+
+	/*Matrix A(2, 2);
+	A.console_read();
+
+	Matrix B(2, 2);
+	B.console_read();
+
+	Matrix C = Matrix::multiplication(B, A, 2, 2, 2, 2);
+	C.console_write();*/
+
+
 	return 0;
+
 }
 
