@@ -15,38 +15,12 @@ int main()
 
 	Matrix C = A.div_cells();
 	cout << endl;
-	C.console_write();*/
+	C.console_write();
 
-	/*Matrix A(3, 2);
-	A.console_read();
-
-	Matrix B(2, 3);
-	B.console_read();
-
-	Matrix C = Matrix::multiplication(A, B);
-	C.console_write();*/
-
-	/*Matrix A(2, 2);
-	A.console_read();
-
-	Matrix B(2, 2);
-	B.console_read();
-
-	Matrix C = Matrix::multiplication(B, A);
-	C.console_write();*/
-
-	/*Matrix A(2, 2);
-	A.console_read();
-
-	Matrix C = Matrix::inversion_order2(A);
-	C.console_write();*/
-
-	/*Matrix A(2);
-	A.console_read();
-	Matrix B(2);
-	B.console_read();
-	Matrix C = A + B;
-	C.console_write();*/
+	Matrix E1 = Matrix::multiplication(A, B);
+	E1.console_write();
+	Matrix E2 = Matrix::multiplication(A, C);
+	E2.console_write();*/
 
 	return 0;
 

@@ -232,54 +232,54 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 {
 	 if (size_line == size_column)
 	 {
-		 Matrix A11(size_line - 1, size_column - 1);		// 4 матриц≥ на €к≥ под≥лен≥ матриц€ A
-		 Matrix A12(size_line - 1, 1);
-		 Matrix A21(1, size_column - 1);
-		 Matrix A22(1, 1);
+		 Matrix A11(size_line / 2, size_column / 2);		// 4 матриц≥ на €к≥ под≥лен≥ матриц€ A
+		 Matrix A12(size_line / 2, size_column / 2);
+		 Matrix A21(size_line / 2, size_column / 2);
+		 Matrix A22(size_line / 2, size_column / 2);
 
-			// под≥л матриц≥ A на 4 матриц≥ розм≥ром (n-1, n-1) (n-1, 1) (1, n-1) (1, 1)
+			// под≥л матриц≥ A на 4 р≥вн≥ матриц≥ 
 		 for (int i = 0; i < size_line; i++)
 		 {
 			 for (int j = 0; j < size_column; j++)
 			 {
-				 if (i < size_line - 1)
+				 if (i < size_line / 2)
 				 {
-					 if (j < size_column - 1)
+					 if (j < size_column / 2)
 					 {
 						 A11.ptr_matrix[i][j] = ptr_matrix[i][j];
 					 }
 					 else
 					 {
-						 A12.ptr_matrix[i][size_column - j - 1] = ptr_matrix[i][j];
+						 A12.ptr_matrix[i][j - size_column/2] = ptr_matrix[i][j];
 					 }
 				 }
 				 else
 				 {
-					 if (j < size_column - 1)
+					 if (j < size_column / 2)
 					 {
-						 A21.ptr_matrix[size_line -i -1][j] = ptr_matrix[i][j];
+						 A21.ptr_matrix[i - size_line / 2][j] = ptr_matrix[i][j];
 					 }
 					 else
 					 {
-						 A22.ptr_matrix[size_line - i -1 ][size_column - j - 1] = ptr_matrix[i][j];
+						 A22.ptr_matrix[i - size_line / 2][j - size_column/ 2] = ptr_matrix[i][j];
 					 }
 				 }
 			 }
 		 }
 
-		 if (A11.size_column > 1)
+		 if (A11.size_column > 2)
 		 {
 			 Matrix A11_i = A11.div_cells();
 			 Matrix X = multiplication(A11_i, A21);
 			 Matrix Y = multiplication(A21, A11_i);
 			 Matrix Q = multiplication(Y, A12);
 			 Q = A22 - Q;
-			 Matrix Q_i = inversion_order1(Q);
+			 Matrix Q_i = Q.div_cells();
 
-			 Matrix B11(size_line - 1, size_column - 1);		// 4 матриц≥ на €к≥ под≥лена обернена матриц€ A
-			 Matrix B12(size_line - 1, 1);
-			 Matrix B21(1, size_column - 1);
-			 Matrix B22(1, 1);
+			 Matrix B11(size_line / 2, size_column / 2);		// 4 матриц≥ на €к≥ под≥лена обернена матриц€ A
+			 Matrix B12(size_line / 2, size_column / 2);
+			 Matrix B21(size_line / 2, size_column / 2);
+			 Matrix B22(size_line / 2, size_column / 2);
 
 			 B11 = multiplication(X, Q_i);
 			 B11 = multiplication(B11, Y);
@@ -296,9 +296,9 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 			 {
 				 for (int j = 0; j < size_column; j++)
 				 {
-					 if (i < size_line - 1)
+					 if (i < size_line / 2)
 					 {
-						 if (j < size_column - 1)
+						 if (j < size_column / 2)
 						 {
 							 B.ptr_matrix[i][j] = B11.ptr_matrix[i][j];
 						 }
@@ -309,7 +309,7 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 					 }
 					 else
 					 {
-						 if (j < size_column - 1)
+						 if (j < size_column / 2)
 						 {
 							 B.ptr_matrix[i][j] = B21.ptr_matrix[size_line - i - 1][j];
 						 }
@@ -324,18 +324,17 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 		 }
 		 else
 		 {
-			 Matrix A11_i = inversion_order1(A11);
-			 Matrix X = multiplication(A11_i, A21);
+			 Matrix A11_i = inversion_order2(A11);
+			 Matrix X = multiplication(A21, A11_i);
 			 Matrix Y = multiplication(A21, A11_i);
 			 Matrix Q = multiplication(Y, A12);
-			 Q = A22 - Q;
-			 
-			 Matrix Q_i = inversion_order1(Q);
+			  Q = A22 - Q;
+			 Matrix Q_i = inversion_order2(Q);
 
-			 Matrix B11(size_line - 1, size_column - 1);		// 4 матриц≥ на €к≥ под≥лена обернена матриц€ A
-			 Matrix B12(size_line - 1, 1);
-			 Matrix B21(1, size_column - 1);
-			 Matrix B22(1, 1);
+			 Matrix B11(size_line / 2, size_column / 2);		// 4 матриц≥ на €к≥ под≥лена обернена матриц€ A
+			 Matrix B12(size_line / 2, size_column / 2);
+			 Matrix B21(size_line / 2, size_column / 2);
+			 Matrix B22(size_line / 2, size_column / 2);
 
 			 B11 = multiplication(X, Q_i);
 			 B11 = multiplication(B11, Y);
@@ -352,9 +351,9 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 			 {
 				 for (int j = 0; j < size_column; j++)
 				 {
-					 if (i < size_line - 1)
+					 if (i < size_line / 2)
 					 {
-						 if (j < size_column - 1)
+						 if (j < size_column / 2)
 						 {
 							 B.ptr_matrix[i][j] = B11.ptr_matrix[i][j];
 						 }
@@ -365,7 +364,7 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 					 }
 					 else
 					 {
-						 if (j < size_column - 1)
+						 if (j < size_column / 2)
 						 {
 							 B.ptr_matrix[i][j] = B21.ptr_matrix[size_line - i -1][j];
 						 }
@@ -430,4 +429,15 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 	 }
 
 	 return C;
+ }
+ Matrix Matrix::operator=(const Matrix& A)
+ {
+	 for (int i = 0; i < size_line; i++)
+	 {
+		 for (int j = 0; j < size_column; j++)
+		 {
+			 ptr_matrix[i][j] = A.ptr_matrix[i][j];
+		 }
+	 }
+	 return *this;
  }
