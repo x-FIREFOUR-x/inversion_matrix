@@ -4,7 +4,7 @@ using namespace std;
 
 int main()
 {
-	Matrix A(4);
+	/*Matrix A(7);
 	A.console_read();
 	cout << endl;
 	A.console_write();
@@ -17,6 +17,13 @@ int main()
 	cout << endl;
 	C.console_write();
 
+	Matrix E1 = Matrix::multiplication(A, B);
+	Matrix E2 = Matrix::multiplication(A, C);
+
+	cout << endl;
+	E1.console_write();
+	cout << endl;
+	E2.console_write();*/
 	/*Matrix A(3, 2);
 	A.console_read();
 
