@@ -270,29 +270,62 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 		 if (A11.size_column > 1)
 		 {
 			 Matrix A11_i = A11.div_cells();
-			 cout << endl;
-			 A11_i.console_write();
-			 cout << endl;
-			 A12.console_write();
+				cout << "A11" << endl;
+				A11.console_write();
+				cout << "A12" << endl;
+				 A12.console_write();
+				cout << "A21" << endl;
+				 A21.console_write();
+				cout << "A22" << endl;
+				A22.console_write();
+				cout << "A11_i" << endl;
+				A11_i.console_write();
 			 Matrix X = multiplication(A11_i, A12);
+				cout << "X" << endl;
+				X.console_write();
 			 Matrix Y = multiplication(A21, A11_i);
+				cout << "Y" << endl;
+				Y.console_write();
 			 Matrix Q = multiplication(Y, A12);
+				cout << "Q" << endl;
+				Q.console_write();
 			 Q = A22 - Q;
+				cout << "Q" << endl;
+				Q.console_write();
 			 Matrix Q_i = inversion_order1(Q);
+				cout << "Q_i" << endl;
+				Q_i.console_write();
 
 			 Matrix B11(size_line - 1, size_column - 1);		// 4 матриц≥ на €к≥ под≥лена обернена матриц€ A
 			 Matrix B12(size_line - 1, 1);
 			 Matrix B21(1, size_column - 1);
 			 Matrix B22(1, 1);
 
-			 B11 = multiplication(X, Q_i);
-			 B11 = multiplication(B11, Y);
+			 cout << "B11" << endl;
+			 B11.console_write();
+			 cout << "B12" << endl;
+			 B12.console_write();
+			 cout << "B21" << endl;
+			 B21.console_write();
+			 cout << "B22" << endl;
+			 B22.console_write();
+
+			 Matrix B11_ = multiplication(X, Q_i);
+			 B11 = multiplication(B11_, Y);
 			 B11 = A11_i + B11;
+				cout << "B11" << endl;
+				B11.console_write();
 			 B12 = multiplication(X, Q_i);
 			 B12 = -B12;
+				cout << "B12" << endl;
+				B12.console_write();
 			 B21 = multiplication(Q_i, Y);
 			 B21 = -B21;
+				cout << "B21" << endl;
+				B21.console_write();
 			 B22 = Q_i;
+				cout << "B22" << endl;
+				B22.console_write();
 
 			 Matrix B(size_line, size_column);		// обернена матриц€ до A, €ка складаЇтьс€ з B11, B12, B21, B22
 
@@ -324,17 +357,42 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 					 }
 				 }
 			 }
+				cout << "B" << endl;
+				B.console_write();
 			 return B;
+
+			 cout<< endl << endl << endl;
 		 }
 		 else
 		 {
+			 	cout << "A11" << endl;
+				A11.console_write();
+				cout << "A12" << endl;
+				A12.console_write();
+				cout << "A21" << endl;
+				A21.console_write();
+				cout << "A22" << endl;
+				A22.console_write();
 			 Matrix A11_i = inversion_order1(A11);
+				cout << "A11_i" << endl;
+				A11_i.console_write();
 			 Matrix X = multiplication(A11_i, A12);
+				cout << "X" << endl;
+				X.console_write();
 			 Matrix Y = multiplication(A21, A11_i);
+				cout << "Y" << endl;
+				Y.console_write();
 			 Matrix Q = multiplication(Y, A12);
+				cout << "Q" << endl;
+				Q.console_write();
 			 Q = A22 - Q;
+				cout << "Q" << endl;
+				Q.console_write();
 			 
 			 Matrix Q_i = inversion_order1(Q);
+
+				cout << "Q_i" << endl;
+				Q_i.console_write();
 
 			 Matrix B11(size_line - 1, size_column - 1);		// 4 матриц≥ на €к≥ под≥лена обернена матриц€ A
 			 Matrix B12(size_line - 1, 1);
@@ -349,6 +407,15 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 			 B21 = multiplication(Q_i, Y);
 			 B21 = -B21;
 			 B22 = Q_i;
+
+				cout << "B11" << endl;
+				B11.console_write();
+				cout << "B12" << endl;
+				B12.console_write();
+				cout << "B21" << endl;
+				B21.console_write();
+				cout << "B22" << endl;
+				B22.console_write();
 
 			 Matrix B(size_line, size_column);		// обернена матриц€ до A, €ка складаЇтьс€ з B11, B12, B21, B22
 
@@ -381,10 +448,10 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 				 }
 			 }
 
-			 cout << endl;
-			 B.console_write();
-			 return B;
-			 
+				cout << "B" << endl;
+				B.console_write();
+				cout << endl << endl << endl;
+			 return B; 
 		 }
 
 

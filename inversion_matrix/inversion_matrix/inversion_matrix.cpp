@@ -4,7 +4,7 @@ using namespace std;
 
 int main()
 {
-	/*Matrix A(4);
+	Matrix A(4);
 	A.console_read();
 	cout << endl;
 	A.console_write();
@@ -15,7 +15,7 @@ int main()
 
 	Matrix C = A.div_cells();
 	cout << endl;
-	C.console_write();*/
+	C.console_write();
 
 	/*Matrix A(3, 2);
 	A.console_read();
