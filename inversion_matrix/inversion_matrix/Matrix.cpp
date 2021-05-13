@@ -270,7 +270,11 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 		 if (A11.size_column > 1)
 		 {
 			 Matrix A11_i = A11.div_cells();
-			 Matrix X = multiplication(A11_i, A21);
+			 cout << endl;
+			 A11_i.console_write();
+			 cout << endl;
+			 A12.console_write();
+			 Matrix X = multiplication(A11_i, A12);
 			 Matrix Y = multiplication(A21, A11_i);
 			 Matrix Q = multiplication(Y, A12);
 			 Q = A22 - Q;
@@ -325,7 +329,7 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 		 else
 		 {
 			 Matrix A11_i = inversion_order1(A11);
-			 Matrix X = multiplication(A11_i, A21);
+			 Matrix X = multiplication(A11_i, A12);
 			 Matrix Y = multiplication(A21, A11_i);
 			 Matrix Q = multiplication(Y, A12);
 			 Q = A22 - Q;
@@ -377,6 +381,8 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 				 }
 			 }
 
+			 cout << endl;
+			 B.console_write();
 			 return B;
 			 
 		 }
@@ -430,4 +436,15 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 	 }
 
 	 return C;
+ }
+ Matrix Matrix::operator=(const Matrix& A)
+ {
+	 for (int i = 0; i < size_line; i++)
+	 {
+		 for (int j = 0; j < size_column; j++)
+		 {
+			 ptr_matrix[i][j] = A.ptr_matrix[i][j];
+		 }
+	 }
+	 return *this;
  }
