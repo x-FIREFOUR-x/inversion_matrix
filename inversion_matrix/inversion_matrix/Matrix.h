@@ -22,7 +22,6 @@ public:
 	void console_write();
 	void file_write(string);
 	Matrix Gauss();
-	static Matrix multiplication(Matrix, Matrix);		// множення довільної матриці яку можна помножити
 	static Matrix inversion_order2(Matrix);				// обернення матриці порядку 2
 	static Matrix inversion_order1(Matrix);				// обернення матриці порядку 1
 	Matrix div_cells();
@@ -30,5 +29,6 @@ public:
 	Matrix operator+(const Matrix);
 	Matrix operator-();
 	Matrix operator=(const Matrix&);
+	Matrix operator*(const Matrix&);
 };
 

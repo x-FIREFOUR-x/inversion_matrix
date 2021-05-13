@@ -168,31 +168,6 @@ Matrix Matrix::Gauss()
 		return 0;
 	}
 }
-Matrix Matrix::multiplication(Matrix A, Matrix B)
-{
-	if (A.size_column == B.size_line)
-	{
-		Matrix C(A.size_line, B.size_column);
-		for (int i = 0; i < A.size_line; i++)
-		{
-			for (int j = 0; j < B.size_column; j++)
-			{
-				float S = 0;
-				for (int k = 0; k < A.size_column; k++)
-				{
-					S += A.ptr_matrix[i][k] * B.ptr_matrix[k][j];
-				}
-				C.ptr_matrix[i][j] = S;
-			}
-		}
-		return C;
-	}
-	else
-	{
-		cout << endl << "multiplicate input not correct matrix" << endl;
-		return 0;
-	}
-}
  Matrix Matrix::inversion_order2(Matrix A)
 {
 	 if (A.size_line == A.size_column && A.size_line == 2)
@@ -267,13 +242,13 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 			 }
 		 }
 
-		 if (A11.size_column > 1)
+				// умова рекурс≥њ (под≥л матриц≥ в≥дд≥л€ючи по л≥вому нижньмо краю на один доки не д≥йдем до чотирьох матриць роз 1)
+		 if (A11.size_column > 1)				
 		 {
-			 Matrix A11_i = A11.div_cells();
-			 Matrix X = multiplication(A11_i, A12);
-			 Matrix Y = multiplication(A21, A11_i);
-			 Matrix Q = multiplication(Y, A12);
-			 Q = A22 - Q;
+			 Matrix A11_i = A11.div_cells();			// виклик рекурс≥њ дл€ знаходженн€ оберненоњ до A11 допоки вона не стане розм≥ру 1
+			 Matrix X = A11_i * A12;
+			 Matrix Y = A21 * A11_i;
+			 Matrix Q = A22 - (Y * A12);
 			 Matrix Q_i = inversion_order1(Q);
 
 			 Matrix B11(size_line - 1, size_column - 1);		// 4 матриц≥ на €к≥ под≥лена обернена матриц€ A
@@ -281,17 +256,14 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 			 Matrix B21(1, size_column - 1);
 			 Matrix B22(1, 1);
 
-			 Matrix B11_ = multiplication(X, Q_i);
-			 B11 = multiplication(B11_, Y);
-			 B11 = A11_i + B11;
-			 B12 = multiplication(X, Q_i);
-			 B12 = -B12;
-			 B21 = multiplication(Q_i, Y);
-			 B21 = -B21;
+			 B11 = A11_i + (X * Q_i * Y);
+			 B12 = -(X * Q_i);
+			 B21 = -(Q_i * Y);
 			 B22 = Q_i;
 
 			 Matrix B(size_line, size_column);		// обернена матриц€ до A, €ка складаЇтьс€ з B11, B12, B21, B22
 
+				// складанн€ матриць частин B до куч≥
 			 for (int i = 0; i < size_line; i++)
 			 {
 				 for (int j = 0; j < size_column; j++)
@@ -326,10 +298,9 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 		 else
 		 {
 			 Matrix A11_i = inversion_order1(A11);
-			 Matrix X = multiplication(A11_i, A12);
-			 Matrix Y = multiplication(A21, A11_i);
-			 Matrix Q = multiplication(Y, A12);
-			 Q = A22 - Q;
+			 Matrix X = A11_i * A12;
+			 Matrix Y = A21 * A11_i;
+			 Matrix Q = A22 - (Y * A12);
 			 Matrix Q_i = inversion_order1(Q);
 
 			 Matrix B11(size_line - 1, size_column - 1);		// 4 матриц≥ на €к≥ под≥лена обернена матриц€ A
@@ -337,17 +308,14 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 			 Matrix B21(1, size_column - 1);
 			 Matrix B22(1, 1);
 
-			 B11 = multiplication(X, Q_i);
-			 B11 = multiplication(B11, Y);
-			 B11 = A11_i + B11;
-			 B12 = multiplication(X, Q_i);
-			 B12 = -B12;
-			 B21 = multiplication(Q_i, Y);
-			 B21 = -B21;
+			 B11 = A11_i + (X * Q_i * Y);
+			 B12 = -(X * Q_i);
+			 B21 = -(Q_i * Y);
 			 B22 = Q_i;
 
 			 Matrix B(size_line, size_column);		// обернена матриц€ до A, €ка складаЇтьс€ з B11, B12, B21, B22
 
+				// складанн€ матриць частин B до куч≥
 			 for (int i = 0; i < size_line; i++)
 			 {
 				 for (int j = 0; j < size_column; j++)
@@ -440,4 +408,29 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 		 }
 	 }
 	 return *this;
+ }
+ Matrix Matrix::operator*(const Matrix& B)
+ {
+	 if (size_column == B.size_line)
+	 {
+		 Matrix C(size_line, B.size_column);
+		 for (int i = 0; i < size_line; i++)
+		 {
+			 for (int j = 0; j < B.size_column; j++)
+			 {
+				 float S = 0;
+				 for (int k = 0; k < size_column; k++)
+				 {
+					 S += ptr_matrix[i][k] * B.ptr_matrix[k][j];
+				 }
+				 C.ptr_matrix[i][j] = S;
+			 }
+		 }
+		 return C;
+	 }
+	 else
+	 {
+		 cout << endl << "multiplicate input not correct matrix" << endl;
+		 return 0;
+	 }
  }
