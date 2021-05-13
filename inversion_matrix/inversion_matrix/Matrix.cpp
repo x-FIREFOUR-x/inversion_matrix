@@ -270,7 +270,7 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 		 if (A11.size_column > 2)
 		 {
 			 Matrix A11_i = A11.div_cells();
-			 Matrix X = multiplication(A11_i, A21);
+			 Matrix X = multiplication(A11_i, A12);
 			 Matrix Y = multiplication(A21, A11_i);
 			 Matrix Q = multiplication(Y, A12);
 			 Q = A22 - Q;
@@ -304,18 +304,18 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 						 }
 						 else
 						 {
-							 B.ptr_matrix[i][j] = B12.ptr_matrix[i][size_column - j - 1];
+							 B.ptr_matrix[i][j] = B12.ptr_matrix[i][j - size_column / 2];
 						 }
 					 }
 					 else
 					 {
 						 if (j < size_column / 2)
 						 {
-							 B.ptr_matrix[i][j] = B21.ptr_matrix[size_line - i - 1][j];
+							 B.ptr_matrix[i][j] = B21.ptr_matrix[i - size_line / 2][j];
 						 }
 						 else
 						 {
-							 B.ptr_matrix[i][j] = B22.ptr_matrix[size_line - i - 1][size_column - j - 1];
+							 B.ptr_matrix[i][j] = B22.ptr_matrix[i - size_line/ 2][j - size_column/ 2];
 						 }
 					 }
 				 }
@@ -325,7 +325,7 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 		 else
 		 {
 			 Matrix A11_i = inversion_order2(A11);
-			 Matrix X = multiplication(A21, A11_i);
+			 Matrix X = multiplication(A11_i, A12);
 			 Matrix Y = multiplication(A21, A11_i);
 			 Matrix Q = multiplication(Y, A12);
 			  Q = A22 - Q;
@@ -359,18 +359,18 @@ Matrix Matrix::multiplication(Matrix A, Matrix B)
 						 }
 						 else
 						 {
-							 B.ptr_matrix[i][j] = B12.ptr_matrix[i][size_column - j -1];
+							 B.ptr_matrix[i][j] = B12.ptr_matrix[i][j - size_column/2];
 						 }
 					 }
 					 else
 					 {
 						 if (j < size_column / 2)
 						 {
-							 B.ptr_matrix[i][j] = B21.ptr_matrix[size_line - i -1][j];
+							 B.ptr_matrix[i][j] = B21.ptr_matrix[i - size_line/ 2][j];
 						 }
 						 else
 						 {
-							 B.ptr_matrix[i][j] = B22.ptr_matrix[size_line - i - 1][size_column - j - 1];
+							 B.ptr_matrix[i][j] = B22.ptr_matrix[i - size_line / 2][j - size_column / 2];
 						 }
 					 }
 				 }
