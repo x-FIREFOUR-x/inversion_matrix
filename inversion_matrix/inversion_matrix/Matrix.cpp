@@ -41,6 +41,7 @@ Matrix::Matrix(const Matrix& origin)
 	}
 
 }
+
 void Matrix::console_read()
 {
 	for (int i = 0; i < size_line; i++)
@@ -95,19 +96,12 @@ void Matrix::file_write(string file)
 		fout << "\n";
 	}
 }
+
 Matrix Matrix::Gauss()
 {
 	if (size_line == size_column)
 	{
 		Matrix A = *this;						// створення обєкта копії вхідної матриці
-		/*Matrix A(size);
-		for (int i = 0; i < size; i++)
-		{
-			for (int j = 0; j < size; j++)
-			{
-				A.ptr_matrix[i][j] = ptr_matrix[i][j];
-			}
-		}*/
 
 		int size = size_line;		// вхідна матриця повинна бути квадратною
 		Matrix E(size);							// одинична матриця яка стане оберненою до даної
@@ -188,6 +182,7 @@ Matrix Matrix::Gauss()
 		return 0;
 	}
 }
+
  Matrix Matrix::inversion_order2(Matrix A)
 {
 	 if (A.size_line == A.size_column && A.size_line == 2)
@@ -263,7 +258,7 @@ Matrix Matrix::Gauss()
 		 }
 
 				// умова рекурсії (поділ матриці відділяючи по лівому нижньмо краю на один доки не дійдем до чотирьох матриць роз 1)
-		 if (A11.size_column > 1)				
+		 if (A11.size_column > 2)				
 		 {
 			 Matrix A11_i = A11.div_cells();			// виклик рекурсії для знаходження оберненої до A11 допоки вона не стане розміру 1
 			 Matrix X = A11_i * A12;
@@ -317,7 +312,7 @@ Matrix Matrix::Gauss()
 		 }
 		 else
 		 {
-			 Matrix A11_i = inversion_order1(A11);
+			 Matrix A11_i = inversion_order2(A11);
 			 Matrix X = A11_i * A12;
 			 Matrix Y = A21 * A11_i;
 			 Matrix Q = A22 - (Y * A12);

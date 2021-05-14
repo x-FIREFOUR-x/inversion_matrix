@@ -13,22 +13,22 @@ class Matrix
 
 	
 public:
-	Matrix(int);
-	Matrix(int, int);
-	~Matrix();
-	Matrix(const Matrix&);
-	void console_read();
+	Matrix(int);			// конструктор квадратної матриці
+	Matrix(int, int);		// конструктор довільної матриці
+	~Matrix();				// деструктор
+	Matrix(const Matrix&);	// конструктор копіювання
+	void console_read();	
 	void file_read(string);
 	void console_write();
 	void file_write(string);
-	Matrix Gauss();
+	Matrix Gauss();				// обернення матриці методом Гауса
 	static Matrix inversion_order2(Matrix);				// обернення матриці порядку 2
 	static Matrix inversion_order1(Matrix);				// обернення матриці порядку 1
-	Matrix div_cells();
-	Matrix operator-(const Matrix);
+	Matrix div_cells();					// обернення матриці методом розбиття на клітинки 
+	Matrix operator-(const Matrix);		
 	Matrix operator+(const Matrix);
 	Matrix operator-();
 	Matrix operator=(const Matrix&);
-	Matrix operator*(const Matrix&);
+	Matrix operator*(const Matrix&);		// множення матриць 
 };
 
