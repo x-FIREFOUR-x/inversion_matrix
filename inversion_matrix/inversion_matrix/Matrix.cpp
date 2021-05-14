@@ -128,6 +128,26 @@ Matrix Matrix::Gauss()
 		// прямий хід
 		for (int i = 0; i < size; i++)		// рядок який віднімають
 		{
+			if (A.ptr_matrix[i][i] == 0)			// заміна рядків місцями якщо там 0
+			{
+				int number = i;		// номер підходящого рядка
+				for (int k = i; k < size; k++)		// пошук підходящого рядка
+				{
+					if (A.ptr_matrix[k][i] != 0)
+					{
+						number = k;
+						break;
+					}
+				}
+				float* temp;
+				temp = A.ptr_matrix[i];
+				A.ptr_matrix[i] = A.ptr_matrix[number];
+				A.ptr_matrix[number] = temp;
+				temp = E.ptr_matrix[i];
+				E.ptr_matrix[i] = E.ptr_matrix[number];
+				E.ptr_matrix[number] = temp;
+			}
+
 			float coef = A.ptr_matrix[i][i];		// коефіцієнт на який потрібно ділити всі елементи рядка матриці для перетворення елем. гол. діагоналі на одиниці
 			for (int j = 0; j < size; j++)		// стовбці (елем рядка i) які теж перебразуються коли роблять 1 на діаг
 			{
