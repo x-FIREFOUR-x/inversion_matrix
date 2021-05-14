@@ -21,10 +21,11 @@ public:
 	void file_read(string);
 	void console_write();
 	void file_write(string);
+	void random(int min, int max);
 	Matrix Gauss();				// обернення матриці методом Гауса
+	Matrix div_cells();					// обернення матриці методом розбиття на клітинки 
 	static Matrix inversion_order2(Matrix);				// обернення матриці порядку 2
 	static Matrix inversion_order1(Matrix);				// обернення матриці порядку 1
-	Matrix div_cells();					// обернення матриці методом розбиття на клітинки 
 	Matrix operator-(const Matrix);		
 	Matrix operator+(const Matrix);
 	Matrix operator-();

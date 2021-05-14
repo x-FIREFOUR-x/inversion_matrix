@@ -97,6 +97,17 @@ void Matrix::file_write(string file)
 	}
 }
 
+void Matrix::random(int min, int max)
+{
+	for (int i = 0; i < size_line; i++)
+	{
+		for (int j = 0; j < size_column; j++)
+		{
+			ptr_matrix[i][j] = rand() % (max - min + 1) + min;
+		}
+	}
+}
+
 Matrix Matrix::Gauss()
 {
 	if (size_line == size_column)
@@ -182,6 +193,159 @@ Matrix Matrix::Gauss()
 		return 0;
 	}
 }
+Matrix Matrix::div_cells()
+{
+	if (size_line == size_column)
+	{
+		Matrix A11(size_line - 1, size_column - 1);		// 4 матриц≥ на €к≥ под≥лен≥ матриц€ A
+		Matrix A12(size_line - 1, 1);
+		Matrix A21(1, size_column - 1);
+		Matrix A22(1, 1);
+
+		// под≥л матриц≥ A на 4 матриц≥ розм≥ром (n-1, n-1) (n-1, 1) (1, n-1) (1, 1)
+		for (int i = 0; i < size_line; i++)
+		{
+			for (int j = 0; j < size_column; j++)
+			{
+				if (i < size_line - 1)
+				{
+					if (j < size_column - 1)
+					{
+						A11.ptr_matrix[i][j] = ptr_matrix[i][j];
+					}
+					else
+					{
+						A12.ptr_matrix[i][size_column - j - 1] = ptr_matrix[i][j];
+					}
+				}
+				else
+				{
+					if (j < size_column - 1)
+					{
+						A21.ptr_matrix[size_line - i - 1][j] = ptr_matrix[i][j];
+					}
+					else
+					{
+						A22.ptr_matrix[size_line - i - 1][size_column - j - 1] = ptr_matrix[i][j];
+					}
+				}
+			}
+		}
+
+		// умова рекурс≥њ (под≥л матриц≥ в≥дд≥л€ючи по л≥вому нижньмо краю на один доки не д≥йдем до чотирьох матриць роз 1)
+		if (A11.size_column > 2)
+		{
+			Matrix A11_i = A11.div_cells();			// виклик рекурс≥њ дл€ знаходженн€ оберненоњ до A11 допоки вона не стане розм≥ру 1
+			Matrix X = A11_i * A12;
+			Matrix Y = A21 * A11_i;
+			Matrix Q = A22 - (Y * A12);
+			Matrix Q_i = inversion_order1(Q);
+
+			Matrix B11(size_line - 1, size_column - 1);		// 4 матриц≥ на €к≥ под≥лена обернена матриц€ A
+			Matrix B12(size_line - 1, 1);
+			Matrix B21(1, size_column - 1);
+			Matrix B22(1, 1);
+
+			B11 = A11_i + (X * Q_i * Y);
+			B12 = -(X * Q_i);
+			B21 = -(Q_i * Y);
+			B22 = Q_i;
+
+			Matrix B(size_line, size_column);		// обернена матриц€ до A, €ка складаЇтьс€ з B11, B12, B21, B22
+
+			   // складанн€ матриць частин B до куч≥
+			for (int i = 0; i < size_line; i++)
+			{
+				for (int j = 0; j < size_column; j++)
+				{
+					if (i < size_line - 1)
+					{
+						if (j < size_column - 1)
+						{
+							B.ptr_matrix[i][j] = B11.ptr_matrix[i][j];
+						}
+						else
+						{
+							B.ptr_matrix[i][j] = B12.ptr_matrix[i][size_column - j - 1];
+						}
+					}
+					else
+					{
+						if (j < size_column - 1)
+						{
+							B.ptr_matrix[i][j] = B21.ptr_matrix[size_line - i - 1][j];
+						}
+						else
+						{
+							B.ptr_matrix[i][j] = B22.ptr_matrix[size_line - i - 1][size_column - j - 1];
+						}
+					}
+				}
+			}
+
+			return B;
+		}
+		else
+		{
+			Matrix A11_i = inversion_order2(A11);
+			Matrix X = A11_i * A12;
+			Matrix Y = A21 * A11_i;
+			Matrix Q = A22 - (Y * A12);
+			Matrix Q_i = inversion_order1(Q);
+
+			Matrix B11(size_line - 1, size_column - 1);		// 4 матриц≥ на €к≥ под≥лена обернена матриц€ A
+			Matrix B12(size_line - 1, 1);
+			Matrix B21(1, size_column - 1);
+			Matrix B22(1, 1);
+
+			B11 = A11_i + (X * Q_i * Y);
+			B12 = -(X * Q_i);
+			B21 = -(Q_i * Y);
+			B22 = Q_i;
+
+			Matrix B(size_line, size_column);		// обернена матриц€ до A, €ка складаЇтьс€ з B11, B12, B21, B22
+
+			   // складанн€ матриць частин B до куч≥
+			for (int i = 0; i < size_line; i++)
+			{
+				for (int j = 0; j < size_column; j++)
+				{
+					if (i < size_line - 1)
+					{
+						if (j < size_column - 1)
+						{
+							B.ptr_matrix[i][j] = B11.ptr_matrix[i][j];
+						}
+						else
+						{
+							B.ptr_matrix[i][j] = B12.ptr_matrix[i][size_column - j - 1];
+						}
+					}
+					else
+					{
+						if (j < size_column - 1)
+						{
+							B.ptr_matrix[i][j] = B21.ptr_matrix[size_line - i - 1][j];
+						}
+						else
+						{
+							B.ptr_matrix[i][j] = B22.ptr_matrix[size_line - i - 1][size_column - j - 1];
+						}
+					}
+				}
+			}
+
+			return B;
+		}
+
+
+	}
+	else
+	{
+		cout << endl << "div_cells input not squre matrix" << endl;
+		return 0;
+	}
+}
 
  Matrix Matrix::inversion_order2(Matrix A)
 {
@@ -217,160 +381,6 @@ Matrix Matrix::Gauss()
 		 return 0;
 	 }
  }
-
- Matrix Matrix::div_cells()
-{
-	 if (size_line == size_column)
-	 {
-		 Matrix A11(size_line - 1, size_column - 1);		// 4 матриц≥ на €к≥ под≥лен≥ матриц€ A
-		 Matrix A12(size_line - 1, 1);
-		 Matrix A21(1, size_column - 1);
-		 Matrix A22(1, 1);
-
-			// под≥л матриц≥ A на 4 матриц≥ розм≥ром (n-1, n-1) (n-1, 1) (1, n-1) (1, 1)
-		 for (int i = 0; i < size_line; i++)
-		 {
-			 for (int j = 0; j < size_column; j++)
-			 {
-				 if (i < size_line - 1)
-				 {
-					 if (j < size_column - 1)
-					 {
-						 A11.ptr_matrix[i][j] = ptr_matrix[i][j];
-					 }
-					 else
-					 {
-						 A12.ptr_matrix[i][size_column - j - 1] = ptr_matrix[i][j];
-					 }
-				 }
-				 else
-				 {
-					 if (j < size_column - 1)
-					 {
-						 A21.ptr_matrix[size_line -i -1][j] = ptr_matrix[i][j];
-					 }
-					 else
-					 {
-						 A22.ptr_matrix[size_line - i -1 ][size_column - j - 1] = ptr_matrix[i][j];
-					 }
-				 }
-			 }
-		 }
-
-				// умова рекурс≥њ (под≥л матриц≥ в≥дд≥л€ючи по л≥вому нижньмо краю на один доки не д≥йдем до чотирьох матриць роз 1)
-		 if (A11.size_column > 2)				
-		 {
-			 Matrix A11_i = A11.div_cells();			// виклик рекурс≥њ дл€ знаходженн€ оберненоњ до A11 допоки вона не стане розм≥ру 1
-			 Matrix X = A11_i * A12;
-			 Matrix Y = A21 * A11_i;
-			 Matrix Q = A22 - (Y * A12);
-			 Matrix Q_i = inversion_order1(Q);
-
-			 Matrix B11(size_line - 1, size_column - 1);		// 4 матриц≥ на €к≥ под≥лена обернена матриц€ A
-			 Matrix B12(size_line - 1, 1);
-			 Matrix B21(1, size_column - 1);
-			 Matrix B22(1, 1);
-
-			 B11 = A11_i + (X * Q_i * Y);
-			 B12 = -(X * Q_i);
-			 B21 = -(Q_i * Y);
-			 B22 = Q_i;
-
-			 Matrix B(size_line, size_column);		// обернена матриц€ до A, €ка складаЇтьс€ з B11, B12, B21, B22
-
-				// складанн€ матриць частин B до куч≥
-			 for (int i = 0; i < size_line; i++)
-			 {
-				 for (int j = 0; j < size_column; j++)
-				 {
-					 if (i < size_line - 1)
-					 {
-						 if (j < size_column - 1)
-						 {
-							 B.ptr_matrix[i][j] = B11.ptr_matrix[i][j];
-						 }
-						 else
-						 {
-							 B.ptr_matrix[i][j] = B12.ptr_matrix[i][size_column - j - 1];
-						 }
-					 }
-					 else
-					 {
-						 if (j < size_column - 1)
-						 {
-							 B.ptr_matrix[i][j] = B21.ptr_matrix[size_line - i - 1][j];
-						 }
-						 else
-						 {
-							 B.ptr_matrix[i][j] = B22.ptr_matrix[size_line - i - 1][size_column - j - 1];
-						 }
-					 }
-				 }
-			 }
-		
-			 return B;
-		 }
-		 else
-		 {
-			 Matrix A11_i = inversion_order2(A11);
-			 Matrix X = A11_i * A12;
-			 Matrix Y = A21 * A11_i;
-			 Matrix Q = A22 - (Y * A12);
-			 Matrix Q_i = inversion_order1(Q);
-
-			 Matrix B11(size_line - 1, size_column - 1);		// 4 матриц≥ на €к≥ под≥лена обернена матриц€ A
-			 Matrix B12(size_line - 1, 1);
-			 Matrix B21(1, size_column - 1);
-			 Matrix B22(1, 1);
-
-			 B11 = A11_i + (X * Q_i * Y);
-			 B12 = -(X * Q_i);
-			 B21 = -(Q_i * Y);
-			 B22 = Q_i;
-
-			 Matrix B(size_line, size_column);		// обернена матриц€ до A, €ка складаЇтьс€ з B11, B12, B21, B22
-
-				// складанн€ матриць частин B до куч≥
-			 for (int i = 0; i < size_line; i++)
-			 {
-				 for (int j = 0; j < size_column; j++)
-				 {
-					 if (i < size_line - 1)
-					 {
-						 if (j < size_column - 1)
-						 {
-							 B.ptr_matrix[i][j] = B11.ptr_matrix[i][j];
-						 }
-						 else
-						 {
-							 B.ptr_matrix[i][j] = B12.ptr_matrix[i][size_column - j -1];
-						 }
-					 }
-					 else
-					 {
-						 if (j < size_column - 1)
-						 {
-							 B.ptr_matrix[i][j] = B21.ptr_matrix[size_line - i -1][j];
-						 }
-						 else
-						 {
-							 B.ptr_matrix[i][j] = B22.ptr_matrix[size_line - i - 1][size_column - j - 1];
-						 }
-					 }
-				 }
-			 }
-
-			 return B; 
-		 }
-
-
-	 }
-	 else
-	 {
-		 cout << endl << "div_cells input not squre matrix" << endl;
-		 return 0;
-	 }
-}
 
  Matrix Matrix::operator-(const Matrix B)
  {

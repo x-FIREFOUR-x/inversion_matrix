@@ -1,10 +1,13 @@
 ﻿#include <iostream>
+#include <ctime>
 #include "Matrix.h"
 using namespace std;
 
 int main()
 {
+	srand(time(NULL));
 	Matrix A(4);
+	//A.random(-20, 50);
 	A.console_read();
 	cout << endl;
 	A.console_write();
