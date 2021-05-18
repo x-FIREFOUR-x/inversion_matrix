@@ -29,7 +29,7 @@ int main()
 	cout << endl;
 	E2.console_write();*/
 
-	/*Matrix A(2);
+	/*Matrix A(4);
 	A.console_read();
 	cout << endl;
 	A.console_write();

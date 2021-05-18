@@ -173,7 +173,9 @@ float Matrix::determinant()
 
 Matrix Matrix::Gauss()
 {
-	if (size_line == size_column)
+	float det = determinant();
+
+	if (size_line == size_column && det != 0)
 	{
 		Matrix A = *this;						// створення обєкта копії вхідної матриці
 
@@ -252,13 +254,14 @@ Matrix Matrix::Gauss()
 	}
 	else
 	{
-		cout << endl << "Guess input not squre" << endl;
+		cout << endl << "Guess input not squre or det == 0" << endl;
 		return 0;
 	}
 }
 Matrix Matrix::div_cells()
 {
-	if (size_line == size_column)
+	float det = determinant();
+	if (size_line == size_column && det !=0)
 	{
 		Matrix A11(size_line - 1, size_column - 1);		// 4 матриці на які поділені матриця A
 		Matrix A12(size_line - 1, 1);
@@ -405,7 +408,7 @@ Matrix Matrix::div_cells()
 	}
 	else
 	{
-		cout << endl << "div_cells input not squre matrix" << endl;
+		cout << endl << "div_cells input not squre matrix or det != 0" << endl;
 		return 0;
 	}
 }
