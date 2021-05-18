@@ -6,7 +6,8 @@ using namespace std;
 int main()
 {
 	srand(time(NULL));
-	Matrix A(4);
+
+	/*Matrix A(4);
 	//A.random(-20, 50);
 	A.console_read();
 	cout << endl;
@@ -26,7 +27,20 @@ int main()
 	cout << endl;
 	E1.console_write();
 	cout << endl;
-	E2.console_write();
+	E2.console_write();*/
+
+	/*Matrix A(2);
+	A.console_read();
+	cout << endl;
+	A.console_write();
+	float det = A.determinant();
+	cout << det << endl;
+
+	if (det == 0)
+	{
+		cout << "det";
+	}*/
+
 	/*Matrix A(3, 2);
 	A.console_read();
 

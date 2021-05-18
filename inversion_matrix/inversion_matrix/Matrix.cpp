@@ -108,6 +108,69 @@ void Matrix::random(int min, int max)
 	}
 }
 
+float Matrix::determinant()
+{
+	if (size_line == size_column)
+	{
+		float determinant = 1;
+		
+		Matrix A = *this;
+		float c_det = 1;   // коефіцієнт на який потрібно домножити визначник, внаслідок елементарних перетворень він може змінюватися
+	
+		for (int i = 0; i < size_line; i++)
+		{
+			if (A.ptr_matrix[i][i] == 0)			// заміна рядків місцями якщо там 0
+			{
+				int number = i;		// номер підходящого рядка
+				for (int k = i; k < size_line; k++)		// пошук підходящого рядка
+				{
+					if (A.ptr_matrix[k][i] != 0)
+					{
+						number = k;
+						break;
+					}
+				}
+				if (number == i)
+				{
+					determinant = 0;
+					break;
+				}
+				float* temp;
+				temp = A.ptr_matrix[i];
+				A.ptr_matrix[i] = A.ptr_matrix[number];
+				A.ptr_matrix[number] = temp;
+
+				c_det *= -1;
+			}
+
+			float coef = A.ptr_matrix[i][i];		// коефіцієнт на який потрібно ділити всі елементи рядка матриці для перетворення елем. гол. діагоналі на одиниці
+			c_det *= coef;	
+			for (int j = 0; j < size_column; j++)		// стовбці (елем рядка i) які теж перебразуються коли роблять 1 на діаг
+			{
+				A.ptr_matrix[i][j] = A.ptr_matrix[i][j] / coef;
+			}
+
+			for (int k = i + 1; k < size_line; k++)	// рядок від якого віднімають
+			{
+				float n = A.ptr_matrix[k][i];			// кількісті рядків i яку потрібно відняти щоб в рядку k і стовбці z утворився нуль (щоб під гол діаг стали нулі)	
+				for (int z = 0; z < size_column; z++)		// стовбці (елементи рядків k, i )
+				{
+					A.ptr_matrix[k][z] = A.ptr_matrix[k][z] - (A.ptr_matrix[i][z] * n);
+				}
+
+			}
+		}
+
+		for (int i = 0; i < size_line; i++)			// обрахунок визначник як добутка елем гол діагоналі зведеної до трикутної матриці
+		{
+			determinant *= A.ptr_matrix[i][i];
+		}
+		determinant *= c_det;
+
+		return determinant;
+	}
+}
+
 Matrix Matrix::Gauss()
 {
 	if (size_line == size_column)
