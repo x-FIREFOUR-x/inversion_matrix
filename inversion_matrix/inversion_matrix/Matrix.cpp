@@ -254,12 +254,12 @@ Matrix Matrix::Gauss()
 	}
 	else
 	{
-		cout << endl << "Guess input not squre or det == 0" << endl;
 		return 0;
 	}
 }
-Matrix Matrix::div_cells()
+Matrix Matrix::div_cells(bool& possibility_work)
 {
+	possibility_work = true;
 	float det = determinant();
 	if (size_line == size_column && det !=0)
 	{
@@ -301,114 +301,155 @@ Matrix Matrix::div_cells()
 		// умова рекурс≥њ (под≥л матриц≥ в≥дд≥л€ючи по л≥вому нижньмо краю на один доки не д≥йдем до чотирьох матриць роз 1)
 		if (A11.size_column > 2)
 		{
-			Matrix A11_i = A11.div_cells();			// виклик рекурс≥њ дл€ знаходженн€ оберненоњ до A11 допоки вона не стане розм≥ру 1
-			Matrix X = A11_i * A12;
-			Matrix Y = A21 * A11_i;
-			Matrix Q = A22 - (Y * A12);
-			Matrix Q_i = inversion_order1(Q);
-
-			Matrix B11(size_line - 1, size_column - 1);		// 4 матриц≥ на €к≥ под≥лена обернена матриц€ A
-			Matrix B12(size_line - 1, 1);
-			Matrix B21(1, size_column - 1);
-			Matrix B22(1, 1);
-
-			B11 = A11_i + (X * Q_i * Y);
-			B12 = -(X * Q_i);
-			B21 = -(Q_i * Y);
-			B22 = Q_i;
-
-			Matrix B(size_line, size_column);		// обернена матриц€ до A, €ка складаЇтьс€ з B11, B12, B21, B22
-
-			   // складанн€ матриць частин B до куч≥
-			for (int i = 0; i < size_line; i++)
+			Matrix A11_i = A11.div_cells(possibility_work);			// виклик рекурс≥њ дл€ знаходженн€ оберненоњ до A11 допоки вона не стане розм≥ру 1
+			
+			if (possibility_work)			// перев≥рка можливост≥ зд≥йсненн€ операц≥њ
 			{
-				for (int j = 0; j < size_column; j++)
+				Matrix X = A11_i * A12;
+				Matrix Y = A21 * A11_i;
+				Matrix Q = A22 - (Y * A12);
+
+				det = Q.determinant();			// перев≥рка чи матриц€ що Ї частиною основноњ матриц≥ невироджена, €кщо так знайти обернену цим методом неможливо
+				if (det == 0)
+					possibility_work = false;
+
+				if (possibility_work)
 				{
-					if (i < size_line - 1)
+					Matrix Q_i = inversion_order1(Q);
+
+					Matrix B11(size_line - 1, size_column - 1);		// 4 матриц≥ на €к≥ под≥лена обернена матриц€ A
+					Matrix B12(size_line - 1, 1);
+					Matrix B21(1, size_column - 1);
+					Matrix B22(1, 1);
+
+					B11 = A11_i + (X * Q_i * Y);
+					B12 = -(X * Q_i);
+					B21 = -(Q_i * Y);
+					B22 = Q_i;
+
+					Matrix B(size_line, size_column);		// обернена матриц€ до A, €ка складаЇтьс€ з B11, B12, B21, B22
+
+					   // складанн€ матриць частин B до куч≥
+					for (int i = 0; i < size_line; i++)
 					{
-						if (j < size_column - 1)
+						for (int j = 0; j < size_column; j++)
 						{
-							B.ptr_matrix[i][j] = B11.ptr_matrix[i][j];
-						}
-						else
-						{
-							B.ptr_matrix[i][j] = B12.ptr_matrix[i][size_column - j - 1];
+							if (i < size_line - 1)
+							{
+								if (j < size_column - 1)
+								{
+									B.ptr_matrix[i][j] = B11.ptr_matrix[i][j];
+								}
+								else
+								{
+									B.ptr_matrix[i][j] = B12.ptr_matrix[i][size_column - j - 1];
+								}
+							}
+							else
+							{
+								if (j < size_column - 1)
+								{
+									B.ptr_matrix[i][j] = B21.ptr_matrix[size_line - i - 1][j];
+								}
+								else
+								{
+									B.ptr_matrix[i][j] = B22.ptr_matrix[size_line - i - 1][size_column - j - 1];
+								}
+							}
 						}
 					}
-					else
-					{
-						if (j < size_column - 1)
-						{
-							B.ptr_matrix[i][j] = B21.ptr_matrix[size_line - i - 1][j];
-						}
-						else
-						{
-							B.ptr_matrix[i][j] = B22.ptr_matrix[size_line - i - 1][size_column - j - 1];
-						}
-					}
+
+					return B;
 				}
+				
 			}
 
-			return B;
+			if (!possibility_work)
+			{
+				return 0;
+			}
+			
 		}
 		else
 		{
-			Matrix A11_i = inversion_order2(A11);
-			Matrix X = A11_i * A12;
-			Matrix Y = A21 * A11_i;
-			Matrix Q = A22 - (Y * A12);
-			Matrix Q_i = inversion_order1(Q);
+			float det = A11.determinant();
+			if (det == 0)							// перев≥рка чи матриц€ що Ї частиною основноњ матриц≥ невироджена, €кщо так знайти обернену цим методом неможливо
+				possibility_work = false;
 
-			Matrix B11(size_line - 1, size_column - 1);		// 4 матриц≥ на €к≥ под≥лена обернена матриц€ A
-			Matrix B12(size_line - 1, 1);
-			Matrix B21(1, size_column - 1);
-			Matrix B22(1, 1);
-
-			B11 = A11_i + (X * Q_i * Y);
-			B12 = -(X * Q_i);
-			B21 = -(Q_i * Y);
-			B22 = Q_i;
-
-			Matrix B(size_line, size_column);		// обернена матриц€ до A, €ка складаЇтьс€ з B11, B12, B21, B22
-
-			   // складанн€ матриць частин B до куч≥
-			for (int i = 0; i < size_line; i++)
+			if (possibility_work)						// перев≥рка можливост≥ зд≥йсненн€ операц≥њ
 			{
-				for (int j = 0; j < size_column; j++)
-				{
-					if (i < size_line - 1)
-					{
-						if (j < size_column - 1)
-						{
-							B.ptr_matrix[i][j] = B11.ptr_matrix[i][j];
-						}
-						else
-						{
-							B.ptr_matrix[i][j] = B12.ptr_matrix[i][size_column - j - 1];
-						}
-					}
-					else
-					{
-						if (j < size_column - 1)
-						{
-							B.ptr_matrix[i][j] = B21.ptr_matrix[size_line - i - 1][j];
-						}
-						else
-						{
-							B.ptr_matrix[i][j] = B22.ptr_matrix[size_line - i - 1][size_column - j - 1];
-						}
-					}
-				}
-			}
+				Matrix A11_i = inversion_order2(A11);
+				Matrix X = A11_i * A12;
+				Matrix Y = A21 * A11_i;
+				Matrix Q = A22 - (Y * A12);
 
-			return B;
+				det = Q.determinant();			// перев≥рка чи матриц€ що Ї частиною основноњ матриц≥ невироджена, €кщо так знайти обернену цим методом неможливо
+				if (det == 0)
+					possibility_work = false;
+
+				if (possibility_work)	// перев≥рка можливост≥ зд≥йсненн€ операц≥њ
+				{
+					Matrix Q_i = inversion_order1(Q);
+
+					Matrix B11(size_line - 1, size_column - 1);		// 4 матриц≥ на €к≥ под≥лена обернена матриц€ A
+					Matrix B12(size_line - 1, 1);
+					Matrix B21(1, size_column - 1);
+					Matrix B22(1, 1);
+
+					B11 = A11_i + (X * Q_i * Y);
+					B12 = -(X * Q_i);
+					B21 = -(Q_i * Y);
+					B22 = Q_i;
+
+					Matrix B(size_line, size_column);		// обернена матриц€ до A, €ка складаЇтьс€ з B11, B12, B21, B22
+
+					   // складанн€ матриць частин B до куч≥
+					for (int i = 0; i < size_line; i++)
+					{
+						for (int j = 0; j < size_column; j++)
+						{
+							if (i < size_line - 1)
+							{
+								if (j < size_column - 1)
+								{
+									B.ptr_matrix[i][j] = B11.ptr_matrix[i][j];
+								}
+								else
+								{
+									B.ptr_matrix[i][j] = B12.ptr_matrix[i][size_column - j - 1];
+								}
+							}
+							else
+							{
+								if (j < size_column - 1)
+								{
+									B.ptr_matrix[i][j] = B21.ptr_matrix[size_line - i - 1][j];
+								}
+								else
+								{
+									B.ptr_matrix[i][j] = B22.ptr_matrix[size_line - i - 1][size_column - j - 1];
+								}
+							}
+						}
+					}
+
+					return B;
+				}
+				
+			}
+			
+			if (!possibility_work)
+			{
+				return 0;
+			}
+			
 		}
 
 
 	}
 	else
 	{
-		cout << endl << "div_cells input not squre matrix or det != 0" << endl;
+		possibility_work = false;
 		return 0;
 	}
 }

@@ -26,7 +26,7 @@ public:
 
 	float determinant();		// отримання визначника матриці
 	Matrix Gauss();				// обернення матриці методом Гауса
-	Matrix div_cells();			// обернення матриці методом розбиття на клітинки
+	Matrix div_cells(bool& possibility_work);			// обернення матриці методом розбиття на клітинки
 
 	static Matrix inversion_order2(Matrix);				// обернення матриці порядку 2
 	static Matrix inversion_order1(Matrix);				// обернення матриці порядку 1
