@@ -78,7 +78,7 @@ void Matrix::console_write()
 	{
 		for (int j = 0; j < size_column; j++)
 		{
-			cout << setprecision(3) << setw(6) << ptr_matrix[i][j] << " ";
+			cout << fixed << setprecision(3) << setw(6) << ptr_matrix[i][j] << " ";
 		}
 		cout << endl;
 	}
@@ -309,11 +309,11 @@ Matrix Matrix::div_cells(bool& possibility_work)
 				Matrix Y = A21 * A11_i;
 				Matrix Q = A22 - (Y * A12);
 
-				det = Q.determinant();			// перевірка чи матриця що є частиною основної матриці невироджена, якщо так знайти обернену цим методом неможливо
-				if (det == 0)
+				det = Q.determinant();			
+				if (det == 0)						// перевірка чи матриця що є частиною основної матриці невироджена, якщо так знайти обернену вхідної цим методом неможливо
 					possibility_work = false;
 
-				if (possibility_work)
+				if (possibility_work)		// перевірка можливості здійснення операції
 				{
 					Matrix Q_i = inversion_order1(Q);
 
@@ -373,7 +373,7 @@ Matrix Matrix::div_cells(bool& possibility_work)
 		else
 		{
 			float det = A11.determinant();
-			if (det == 0)							// перевірка чи матриця що є частиною основної матриці невироджена, якщо так знайти обернену цим методом неможливо
+			if (det == 0)							// перевірка чи матриця що є частиною основної матриці невироджена, якщо так знайти вхідної обернену цим методом неможливо
 				possibility_work = false;
 
 			if (possibility_work)						// перевірка можливості здійснення операції
@@ -383,7 +383,7 @@ Matrix Matrix::div_cells(bool& possibility_work)
 				Matrix Y = A21 * A11_i;
 				Matrix Q = A22 - (Y * A12);
 
-				det = Q.determinant();			// перевірка чи матриця що є частиною основної матриці невироджена, якщо так знайти обернену цим методом неможливо
+				det = Q.determinant();			// перевірка чи матриця що є частиною основної матриці невироджена, якщо так знайти вхідної обернену цим методом неможливо
 				if (det == 0)
 					possibility_work = false;
 

@@ -7,7 +7,7 @@ int main()
 {
 	srand(time(NULL));
 
-	/*Matrix A(4);
+	Matrix A(2);
 	A.random(-20, 50);
 	//A.console_read();
 	cout << endl;
@@ -43,7 +43,7 @@ int main()
 	{
 		cout << "dont correct operation div cells" << endl;
 	}
-	*/
+	
 		
 	/*Matrix A(4);
 	A.console_read();
